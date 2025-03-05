@@ -2,6 +2,8 @@
     <div class="min-h-screen bg-gray-100 p-6">
         <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
             <h1 class="text-2xl font-bold mb-6">Quiz Admin Dashboard</h1>
+
+            <!-- Quiz Creation Form -->
             <div v-if="!quizActive" class="mb-8">
                 <h2 class="text-xl font-semibold mb-4">Create New Quiz</h2>
                 <div class="space-y-4">
@@ -10,6 +12,8 @@
                         <input v-model="quizTitle" type="text" class="w-full p-2 border rounded-md"
                             placeholder="Enter quiz title" />
                     </div>
+
+                    <!-- Questions Section -->
                     <div>
                         <div class="flex justify-between items-center mb-2">
                             <h3 class="text-lg font-medium">Questions</h3>
@@ -18,6 +22,7 @@
                                 Add Question
                             </button>
                         </div>
+
                         <div v-for="(question, qIndex) in questions" :key="qIndex" class="border p-4 rounded-md mb-4">
                             <div class="flex justify-between mb-2">
                                 <h4 class="font-medium">Question {{ qIndex + 1 }}</h4>
@@ -32,8 +37,10 @@
                                     </svg>
                                 </button>
                             </div>
+
                             <input v-model="question.text" type="text" class="w-full p-2 border rounded-md mb-2"
                                 placeholder="Enter question text" />
+
                             <div class="space-y-2">
                                 <div v-for="(option, oIndex) in question.options" :key="oIndex"
                                     class="flex items-center gap-2">
@@ -59,6 +66,8 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Active Quiz Section -->
             <div v-if="quizActive" class="text-center">
                 <h2 class="text-xl font-semibold mb-4">Quiz Active!</h2>
                 <div class="bg-gray-100 p-8 rounded-lg mb-6">
@@ -101,6 +110,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 
+// Quiz creation state
 const quizTitle = ref('');
 const questions = ref([]);
 const quizActive = ref(false);
@@ -108,6 +118,8 @@ const pinCode = ref('');
 const players = ref([]);
 const gameStarted = ref(false);
 const currentQuestionIndex = ref(0);
+
+// Add a new question
 const addQuestion = () => {
     questions.value.push({
         text: '',
@@ -117,10 +129,12 @@ const addQuestion = () => {
     });
 };
 
+// Remove a question
 const removeQuestion = (index) => {
     questions.value.splice(index, 1);
 };
 
+// Check if form is valid
 const isFormValid = computed(() => {
     if (!quizTitle.value) return false;
     if (questions.value.length === 0) return false;
@@ -135,6 +149,7 @@ const isFormValid = computed(() => {
     return true;
 });
 
+// Create quiz and generate PIN
 const createQuiz = async () => {
     try {
         // In a real app, you would send this data to your backend
